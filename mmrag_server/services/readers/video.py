@@ -69,8 +69,11 @@ class AudioTranscriptionReader(BaseReader):
             # 获取video_audio_path 的文件名使用Path
 
             audio_location = Path(video_audio_path).with_suffix(".mp3").as_posix()
-            video_clip.audio.write_audiofile(audio_location, codec="mp3")
-            video_clip.close()
+            try:
+                video_clip.audio.write_audiofile(audio_location, codec="mp3")
+            finally:
+                # Ensure video_clip is always closed to prevent resource leak
+                video_clip.close()
             video_audio_path = audio_location
 
         elif not video_audio_path.endswith(".mp3"):
