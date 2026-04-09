@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import List
 
 from config import Config
@@ -12,6 +13,7 @@ from services.search.google_search import (
 )
 from utils.response import resp_error, resp_success
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -32,7 +34,8 @@ async def search_notes(query: str = Query(None, alias="query")):
     try:
         datas = await fetch_notes_by_search(query)
         return resp_success("Search qa success", datas)
-    except:
+    except Exception as e:
+        logger.error(f"Note search error: {e}")
         return resp_error("Note search error")
 
 
@@ -58,5 +61,6 @@ async def search_public(
                 query, max_search
             )
         return resp_success("Search outreach success", datas)
-    except:
+    except Exception as e:
+        logger.error(f"Public search error: {e}")
         return resp_error("public Search error")

@@ -17,7 +17,7 @@ try:
     from operators import *
     from postprocess import build_post_process
 
-except:
+except ImportError:
 
     current_dir = Path(__file__).resolve().parent
     sys.path.append(str(current_dir))
